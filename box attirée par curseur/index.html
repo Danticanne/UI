@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'Raleway';
+            src: url(./Raleway-Bold.ttf);
+        }
+        :root{
+            --clip : circle(20px at 0 0)
+        }
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: Raleway;
+        }
+        #container{
+            background-color: rgb(202, 202, 202);
+            height: 100vh;
+            width: 100vw;
+        }
+        #bouton{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            height: 300px;
+            width: 250px;
+            background-color: black;
+            border: none;
+            color: rgb(202, 202, 202);
+            font-size: 24px;
+            border-radius: 7.5px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <button id="bouton">Bouton</button>
+        <div id="follow">
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script>
+        let cadreX = $(window).width()/2
+        let cadreY = $(window).height()/2
+
+        let pointX = $(window).width()/2
+        let pointY = $(window).height()/2
+
+        let mouseX = 0
+        let mouseY = 0
+
+        let distX = 0
+        let distY = 0
+
+        let speed = 0.05
+
+        function animation() {
+            distX = pointX - cadreX
+            distY = pointY - cadreY
+
+            pointX = mouseX/4 + $(window).width()/2 //cadreX + (distX * speed)
+            pointY = mouseY/4 + $(window).height()/2//cadreY = cadreY + (distY * speed)
+
+            cadreX = cadreX + speed * distX
+            cadreY = cadreY + speed * distY
+
+            console.log(distX)
+            $('#bouton').css({
+                left : cadreX + "px",
+                top : cadreY + "px"
+            })
+
+            requestAnimationFrame(animation)
+        }
+
+        $('#container').on('mousemove', (e) => {
+            if(e.pageX > parseInt($('#bouton').css('left'))-300 && e.pageX < parseInt($('#bouton').css('left'))+300 ){
+                mouseX = e.pageX - parseInt($('#bouton').css('left'))
+                mouseY = e.pageY - parseInt($('#bouton').css('top'))
+            }else{
+                mouseX = 0
+                mouseY = 0
+            }
+        })
+
+        animation()
+    </script>
+</body>
+</html>

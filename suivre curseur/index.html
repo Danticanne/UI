@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'Raleway';
+            src: url(./Raleway-Bold.ttf);
+        }
+        :root{
+            --clip : circle(20px at 0 0)
+        }
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: Raleway;
+        }
+        #container{
+            background-color: rgb(202, 202, 202);
+            height: 100vh;
+            width: 100vw;
+        }
+        #follow{
+            height: 40px;
+            width: 40px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            translate : -50% -50%;
+            z-index: 0;
+        }
+        #bouton{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            height: 50px;
+            width: 125px;
+            background-color: black;
+            border: none;
+            color: rgb(202, 202, 202);
+            font-size: 24px;
+            border-radius: 5px;
+            z-index: 1;
+        }
+        #bouton::after{
+            content: 'Bouton';
+            position: absolute;
+            background-color: red;
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+            background-color: rgb(202, 202, 202);
+            color: black;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: var(--clip) ;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <button id="bouton">Bouton</button>
+        <div id="follow">
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script>
+        let cursorX = 0
+        let cursorY = 0
+
+        let mouseX = 0
+        let mouseY = 0
+
+        let distX = 0
+        let distY = 0
+
+        let clipStr = 'circle(20px at 0 0)'
+
+        let speed = 0.075
+
+        function animation() {
+            distX = mouseX - cursorX
+            distY = mouseY - cursorY
+
+            cursorX = cursorX + (distX * speed)
+            cursorY = cursorY + (distY * speed)
+
+            clipStr = 'circle(20px at ' + (cursorX-$(window).width()/2+parseInt($('#bouton').css('width'), 10)/2).toString() + 'px ' + (cursorY-$(window).height()/2+parseInt($('#bouton').css('height'), 10)/2).toString() + 'px)' 
+            console.log($('#bouton').css('width'))
+            $("body").css('--clip', clipStr)
+
+            $('#follow').css({
+                left : cursorX + "px",
+                top : cursorY + "px"
+            })
+
+            requestAnimationFrame(animation)
+        }
+
+        $('#container').on('mousemove', (e) => {
+            mouseX = e.pageX
+            mouseY = e.pageY
+        })
+
+        animation()
+    </script>
+</body>
+</html>
